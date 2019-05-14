@@ -34,7 +34,43 @@
  *
  */
 function parseBankAccount(bankAccount) {
-    throw new Error('Not implemented');
+    let result = 0;
+    for (let i = 0; i < bankAccount.length / 3 - 1; i += 3)
+    {
+        const digit = [bankAccount.slice(i, i + 3), bankAccount.slice(i + 28, i + 31), bankAccount.slice(i + 56, i + 59)];
+        let num = 0;
+        
+        if (digit[0][1] == '_' && digit[1][1] == ' ' && digit[2][1] == '_')
+        {
+            num = 0;
+        }
+        else if (digit[0][1] == ' ' && digit[1][1] == ' ' && digit[2][1] == ' ')
+        {
+            num = 1;
+        }
+        else if (digit[1] == ' _|')
+        {
+            num = (digit[2] == '|_ ') ? 2 : 3;
+        } 
+        else if (digit[1] == '|_|' && digit[2] == '  |')
+        {
+            num = 4;
+        }
+        else if (digit[1] == '|_ ')
+        {
+            num = (digit[2] == ' _|') ? 5 : 6;
+        }
+        else if (digit[0][1] == '_' && digit[1][1] == ' ' && digit[2][1] == ' ')
+        {
+            num = 7;
+        }
+        else if (digit[1] == '|_|')
+        {
+            num = (digit[2][0] == '|') ? 8 : 9;
+        }
+        result = result * 10 + num;
+    }
+    return result;
 }
 
 
@@ -63,7 +99,40 @@ function parseBankAccount(bankAccount) {
  *                                                                                                'characters.'
  */
 function* wrapText(text, columns) {
-    throw new Error('Not implemented');
+    if (columns > text.length)
+    {
+        yield text;
+    }
+    else
+    {
+        let words = text.split(' ');
+        let buf = [];
+        buf.push(words[0]);
+        let len = words[0].length;
+        for (let i = 1; i < words.length; i++)
+        {
+            if (len + words[i].length + 1 <= columns)
+            {
+                buf.push(words[i]);
+                len += words[i].length + 1;
+            }
+            else
+            {
+                yield buf.join(' ');
+                buf.length = 0;
+                len = 0;
+                buf.push(words[i]);
+                len = words[i].length;
+            }
+        }
+        if (buf.length)
+        {
+            yield buf.join(' ');
+            buf.length = 0;
+            len = 0;
+        }
+    }
+}
 }
 
 
