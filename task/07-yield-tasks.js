@@ -33,9 +33,20 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
-}
+    for (let i = 99; i > 2; i--)
+    {
+        yield `${i} bottles of beer on the wall, ${i} bottles of beer.`;
+        yield `Take one down and pass it around, ${i - 1} bottles of beer on the wall.`;
+    }
+    yield '2 bottles of beer on the wall, 2 bottles of beer.';
+    yield 'Take one down and pass it around, 1 bottle of beer on the wall.';
 
+    yield '1 bottle of beer on the wall, 1 bottle of beer.';
+    yield 'Take one down and pass it around, no more bottles of beer on the wall.';
+
+    yield 'No more bottles of beer on the wall, no more bottles of beer.';
+    yield 'Go to the store and buy some more, 99 bottles of beer on the wall.';
+}
 
 /**
  * Returns the Fibonacci sequence:
@@ -47,7 +58,16 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+    let fn1 = 1;
+    let fn2 = 1;
+
+    while (true) 
+    {
+        var current = fn2;
+        fn2 = fn1;
+        fn1 = fn1 + current;
+        yield current;
+    }
 }
 
 
@@ -82,7 +102,21 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let stack = [root];
+
+    while (stack.length != 0)
+    {
+        let node = stack.pop();
+        yield node;
+
+        if (node.children !== undefined)
+        {
+            for (let child of node.children.reverse()) 
+            {
+                stack.push(child);
+            }
+        }
+    }
 }
 
 
@@ -108,7 +142,28 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let queue = [root];
+
+    while (queue.length != 0) 
+    {
+        let node = queue.shift();
+        yield node;
+
+        if (node.children !== undefined) 
+        {
+            for (let child of node.children) 
+            {
+                if (queue.length == 0 && child.children === undefined) 
+                {
+                    yield child;
+                } 
+                else 
+                {
+                    queue.push(child);
+                }
+            }
+        }
+    }
 }
 
 
