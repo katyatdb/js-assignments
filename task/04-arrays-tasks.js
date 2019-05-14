@@ -516,8 +516,8 @@ function distinct(arr) {
 function group(array, keySelector, valueSelector) {
    let map = new Map();
    array.map(x => {
-      let key = keySelector;
-      let value = valueSelector;
+      let key = keySelector(x);
+      let value = valueSelector(x);
       let elem = map.get(key);
       elem == undefined ? map.set(key, [value]) : elem.push(value);
    });
