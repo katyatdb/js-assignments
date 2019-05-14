@@ -88,7 +88,31 @@ function* expandBraces(str) {
  *
  */
 function getZigZagMatrix(n) {
-    throw new Error('Not implemented');
+    let matrix = Array.from({length: n}, (value) => Array.from({length: n}, () => 0));
+    let i = 1;
+    let j = 1;
+    for (let k = 0; k < n * n; k++)
+    {
+        matrix[i - 1][j - 1] = k;
+
+        if ((i + j) % 2 == 0)
+        {
+            (j < n) ? j++ : i += 2;
+            if (i > 1)
+            {
+                i--;
+            }
+        }
+        else
+        {
+            (i < n) ? i++ : j += 2;
+            if (j > 1)
+            {
+                j--;
+            } 
+        }
+    }
+    return matrix;
 }
 
 
@@ -113,7 +137,29 @@ function getZigZagMatrix(n) {
  *
  */
 function canDominoesMakeRow(dominoes) {
-    throw new Error('Not implemented');
+    let hold = [[]];
+    hold[0] = dominoes.shift();
+
+    let lastLength = 0;
+    while (lastLength != dominoes.length && dominoes.length > 0) 
+    {
+        lastLength = dominoes.length;
+        for (let i = 0; i < dominoes.length; i++) 
+        {
+            if (hold[hold.length - 1][1] == dominoes[i][0] && hold[hold.length - 1][0] != dominoes[i][1]) 
+            {
+                hold[hold.length] = dominoes[i];
+                dominoes.splice(i, 1);
+        
+            } 
+            else if (hold[hold.length - 1][1] == dominoes[i][1] && hold[hold.length - 1][0] != dominoes[i][1]) 
+            {
+                hold[hold.length] = dominoes[i].reverse();
+                dominoes.splice(i, 1);
+            }
+        }
+    }
+    return dominoes.length == 0;
 }
 
 
@@ -137,7 +183,34 @@ function canDominoesMakeRow(dominoes) {
  * [ 1, 2, 4, 5]          => '1,2,4,5'
  */
 function extractRanges(nums) {
-    throw new Error('Not implemented');
+    let i = 0;
+    let str = '';
+    while (i < nums.length)
+    {
+        let j = i;
+        while (nums[j + 1] - nums[j] == 1)
+        {
+            j++;
+        }
+        if (i == j)
+        {
+            str += `${nums[i]},`;
+            i++;
+        }
+        else 
+        {
+            if (i == j - 1)
+            {
+                str += `${nums[i]},${nums[i + 1]},`;
+            }
+            else
+            {
+                str += `${nums[i]}-${nums[j]},`;
+            }
+            i = j + 1;
+        }
+    } 
+    return str.slice(0, -1);
 }
 
 module.exports = {
